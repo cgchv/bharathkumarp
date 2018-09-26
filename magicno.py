@@ -1,5 +1,4 @@
-choicelist=list();
-indexlist=list();
+print("Welcome to Magic Number game")
 board=[int( ) for i in range(9)]
 
 def print_board():
