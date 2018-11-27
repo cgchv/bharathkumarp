@@ -1,0 +1,233 @@
+#Bus Reservation System
+cnt=0
+class BusReservationSystem:
+    
+#    board=[" " for i in range(9)]
+    def __init__(self,bus):
+        
+        self.bus=bus
+        
+        
+    def display(self):
+        
+        print("*********************************************************")
+        print("Welcome to "+self.bus+" Bus Reservation System")
+        print("*********************************************************")
+        
+    def totalseats(self):
+        
+        print("Total seats available is 32 and the seat numbering ranges from 0 to 31")        
+    #Below method prints the seat numbers available in the bus (w indicates window seats)
+    def seatmatrix(self):
+        
+        global board
+        board=[" " for i in range(32)]
+        global row1
+        row1="|0w|1|2|3w|".format(board[0],board[1],board[2],board[3])
+        row2="|4w|5|6|7w|".format(board[4],board[5],board[6],board[7])
+        row3="|8w|9|10|11w|".format(board[8],board[9],board[10],board[11])    
+        row4="|12w|13|14|15w|".format(board[12],board[13],board[14],board[15])
+        row5="|16w|17|18|19w|".format(board[16],board[17],board[18],board[19])
+        row6="|20w|21|22|23w|".format(board[20],board[21],board[22],board[23])
+        row7="|24w|25|26|27w|".format(board[24],board[25],board[26],board[27])
+        row8="|28w|29|30|31w|".format(board[28],board[29],board[30],board[31])
+        print(row1)
+        print(row2)
+        print(row3)
+        print(row4)
+        print(row5)
+        print(row6)
+        print(row7)
+        print(row8)
+        
+
+            
+            
+        
+class Administrator(BusReservationSystem):
+    
+    name1="BHARATH"
+    passw="A21asdf"
+    
+    def __init__(self,name,password):
+        
+        self.name=name
+        self.password=password
+  #      self.bal=bal
+        
+    #Check for authentication    
+    def authentication(self):    
+        
+        if(Administrator.name1==self.name and Administrator.passw==self.password):
+            print("Authentication successful")
+            return 1
+        elif(Administrator.name1==self.name and Administrator.passw!=self.password):
+            print("Incorrect password, try again")
+            return 0
+        elif(Administrator.name1!=self.name and Administrator.passw==self.password):
+            print("Administrator name incorrect")
+            return 2
+        else:
+            print("Authentication failed, enter correct name and password\n")
+            return 3
+    #To display the balance
+    def balance(self,bal):
+        
+        print("Your balance is",bal)
+        
+        
+class User(BusReservationSystem):
+    
+    global accountbalance
+    accountbalance=0
+    global l1
+    l1=[]
+    def __init__(self,name,password,filename):
+        
+        self.name=name
+        self.password=password
+        self.filename=filename
+        
+    
+     
+
+    #Below method allows user to book seat numbers    
+    def seatbooking(self):
+        
+        global num
+        global line
+        line=0
+        flag=1
+        print("Below seats are already booked")
+        print(l1)
+        print("Maximum four seats can be booked\n")
+        while True:
+           
+            num=int(input("Enter number of seats to be booked\n"))
+            if(num<=4):
+                f=open(self.filename,"a")
+                
+                a=raw_input("Enter seat numbers(ex:123 means 1,2,3)\n")
+      #         b=list(map(int,' '.join(str(a).split())))
+                a = list(a.split (","))
+                print(a)
+                
+                
+                for i in a:
+                    i=int(i)
+  #                 print(i)
+    #               f=open("pyt.txt","w")
+                    if(board[i]!=1):         
+                        l1.append(int(i))
+                        
+                        board[i]=1
+                #       print(board[i])
+                        
+                        
+                        f.write(str(l1))
+                    else:
+                        print("Your selected seat number"+str(i)+" is already booked\n")
+                        a=int(raw_input("Replace seat number"+str(i)+"with a new seat number\n"))
+       #                print(l1)
+                        if(a not in l1):
+                             board[a]=1
+                             l1.append(a)
+                             f.write(str(l1))
+                        else:
+                            a=int(raw_input("Seat no"+str(a)+"is already booked, choose new one"))
+                            board[a]=1
+                            l1.append(a)
+                            f.write(str(l1))
+         #              print("Please enter the name,password again")
+          #             self.goto(2)
+         #              print(line)
+             #          if(line==2):
+            #               break
+                f.close()        
+            else:
+                 continue
+#                    else:
+ #                        break
+ #          if(line==2):
+ #                continue
+            break
+        
+        
+ #      return self.fileop(f)
+        
+    #Below method allows user to make payment        
+    def paymentmode(self):
+        
+            global accountbalance
+            print("Online payment accepted(Rs 750 for each seat)\n")
+            print(num)
+            amt=int(raw_input("Enter the amount to be paid\n"))
+            if(num==1 and amt!=750):
+                amt=int(raw_input("Please pay Rs.750\n"))
+            elif(num==2 and amt!=1500):
+                amt=int(raw_input("Please pay Rs.1500\n"))
+            elif(num==3 and amt!=2250):
+                amt=int(raw_input("Please pay Rs.2250\n"))
+            elif(num==4 and amt!=3000):
+                amt=int(raw_input("Please pay Rs.3000\n"))
+            
+            print(amt)
+            accountbalance+=amt
+    #       print("Account balance is ",accountbalance)
+            return(accountbalance)
+            
+            
+        
+train=BusReservationSystem("RajaHamsa")
+train.display()
+train.totalseats()
+train.seatmatrix()
+
+
+while True:
+    
+    option=raw_input("Choose any option(ex:admin or user)\n")
+    if(option=="admin" or option=="ADMIN"):
+        
+        name,password=raw_input("Please enter your name and password\n").split()
+        adm=Administrator(name,password)    
+        a=adm.authentication()
+        if(a==2):
+           name=raw_input("Enter your name\n")
+           adm=Administrator(name,password,0)
+           a=adm.authentication()
+        elif(a==0):    
+           password=raw_input("Enter password\n")
+           adm=Administrator(name,password,0)
+           a=adm.authentication()
+        elif(a==3):
+           name,password=raw_input("Please enter your name and password\n").split()
+           adm=Administrator(name,password,0)
+           a=adm.authentication()
+        else:    
+           pass
+        if(cnt>=1):
+            print("Check your account balance\n")
+            opt=raw_input("Check your account balance(Choose yes or no)\n")
+            if(opt=="yes" or opt=="YES"):
+               adm.balance(b)
+        else:
+            print("Your balance is zero")
+        
+        
+    else:
+       
+     while True: 
+          
+          a=[]
+          name1,password1=raw_input("Please enter your name and password\n").split() 
+          usr=User(name1,password1,"pyt.txt")
+          cnt+=1
+          usr.seatbooking()
+   #       usr.fileop(f)
+          b=usr.paymentmode()
+ #         train.fileop1(f)
+ #         adm=Administrator(name1,password1)
+#         adm.balance(b)
+#         adm.balance()
+          break
