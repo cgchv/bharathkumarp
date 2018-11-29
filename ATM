@@ -1,0 +1,173 @@
+my $c=0;
+#open the file in write mode 
+if(!open(fh,">debitcarddetails"))
+{
+    die("Exit the program\n");
+}
+else
+{
+print fh "kohli 3913 2345 1234 1234 pin=1023 balance=5000";
+
+#open  file in append mode
+if(!open(fh,">>disk details"))
+  {
+   die ("Exit the program\n");
+ }
+ else
+{
+print fh "jackson 1245 3628 2357 1289 pin=1234 balance=10000\n";
+print fh "abd 8769 4567 2897 3478 pin=3456 balance=15000\n";
+print fh "messi 1234 5478 9587 3467 pin=4352 balance=20000\n";
+print fh "kohli 3913 2345 1234 1234 pin=1023 balance=5000\n";
+print fh "ronaldo 1278 1278 4356 2567 pin=1921 balance=7000\n";
+print fh "federer 9234 5678 3456 1092 pin=1986 balance=8000\n";
+}
+close(fh);
+}
+#open file in read mode 
+if(!open(fh,"<disk details"))
+{
+  die("Exit the program\n");
+}
+else
+{
+print("To insert card enter ok\n");
+my $ins=<STDIN>;
+chomp($ins);
+if(($ins eq "ok") || ($ins eq "OK"))
+{
+#Enter your name and debit card details    
+ll:print("Welcome to HDFC ATM\n");
+print("Please enter your name in small letters\n");
+print("Enter your name\n");
+my $name=<STDIN>;
+my $Name=lc $name;
+ $Name="".$Name;
+ chomp($Name);
+#if($Name=~/(jackson)/){
+
+    
+print("Enter your debit card number\n");
+my $debitno = <STDIN>;
+$debitno="".$debitno; 
+chomp($debitno);
+my $count=0;
+foreach my $line(<fh>)
+{
+#my $count;
+if($line=~m/(\w+)\s+(\d{4}\s+\d{4}\s+\d{4}\s+\d{4})\s+pin=(\d{4})\s+balance=(\d+)/)
+{
+    #if name entered doesn't exist in the record then it prints "You do not have an account"
+    if(($Name != $1 || $debitno != $2))
+    {
+        
+        $count=$count+1;
+        
+        if($count>=6){
+            print("You do not have an account\n");
+            }
+            }
+    else
+    {
+        print($2);
+#    if((!($Name cmp $1)) && ($debitno == $2))
+#if name and debit card details exist then authentication will be successful
+    if(!($Name cmp $1))
+    {
+        if(!($debitno cmp $2))
+        
+    {
+        
+        print("Authentication successful, please enter your pin\n");
+        my $pin=<STDIN>;
+        if($pin==$3)
+        {
+            print("Select any one below option\n");
+            print("1)Withdraw\n");
+            print("2)Deposit\n");
+            print("3)Exit\n");
+            my $a=<STDIN>;
+            #Withdraw option 
+            if($a==1)
+            {
+                $c+=1;
+                print("Your balance is $4\n");
+                print("Enter the amount to be withdrawn\n");
+  #             my $amt=<STDIN>
+  #             print("Your balance is $amt")
+                 my $amt=<STDIN>;
+                 
+                if($amt>$4)
+                {
+                    print("You don't have sufficient balance, Check your balance again and enter the amount to be withdrawn\n");
+                    print("Your balance is $4\n");
+                    print("Enter the amount to be withdrawn\n");
+                    my $amt=<STDIN>;
+                    if($amt>0)
+                    {
+                    print("You have withdrawn $amt\n");
+                    
+                    my $g=$4-$amt;
+                    print("Your account balance is $g\n");
+                    print("Thank you for using HDFC ATM\n");
+                    }
+                }
+                
+                else
+                
+                {
+                    if($amt>0)
+                    {
+                    print("You have withdrawn $amt\n");
+                    
+                
+                    my $g=$4-$amt;
+                    
+                    print("Your account balance is $g\n");
+                    print("Thank you for using HDFC ATM\n");
+                    }
+                }
+            }
+            #Deposit option
+            elsif($a==2)
+            
+            {
+                print("Enter the amount to be deposited\n");
+                my $amt=<STDIN>;
+                if($amt>0)
+                {
+                my $g=$4+$amt;
+                print("Your account balance is $g\n");
+                print("Thank you for using HDFC bank\n");
+                }
+            }
+            #Exit option
+            elsif($a==3)
+            
+            {
+                print("Thank you for using HDFC ATM\n");
+            }
+        }
+    }
+    }
+    }
+}
+}
+}
+#User gets another option to enter the card
+else{
+    print("please enter ok to insert the card\n");
+    $ins=<STDIN>;
+    chomp($ins);
+    if($ins eq "ok" || $ins eq "OK")
+    {
+        goto ll;
+    }
+    else
+    {
+       print("Thank you for using HDFC ATM\n");
+    }
+}
+}
+
+
