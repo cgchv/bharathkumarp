@@ -1,0 +1,367 @@
+count=30
+count1=30
+count2=30
+count3=30
+count4=30
+count5=30
+cnt=0
+import sys
+
+#open the file in write mode
+
+file = open("pyt.txt", "w")
+file.write("FantasticBeasts 350 275 10:30am \n")
+#file.write("Manikarnika 250 10:30\n")
+#file.write("PK 200 3:30\n")
+file.write("KGF 150 100 3:30pm\n")
+file.write("Bahubali 200 150 7:30pm\n")
+file.close()
+
+
+print("***********************************************")
+print("-----Welcome to Movie Reservation System-------")
+print("***********************************************")
+
+class Administrator():
+    
+    name1="BHARATH"
+    passw="A21asdf"
+    
+    def __init__(self,name,password):
+        
+        self.name=name
+        self.password=password
+  #      self.bal=bal
+  
+        
+    #Check for authentication    
+    def authentication(self):    
+        
+        if(Administrator.name1==self.name and Administrator.passw==self.password):
+            print("Authentication successful\n")
+            return 1
+        elif(Administrator.name1==self.name and Administrator.passw!=self.password):
+            print("Incorrect password, try again\n")
+            return 0
+        elif(Administrator.name1!=self.name and Administrator.passw==self.password):
+            print("Administrator name incorrect\n")
+            return 2
+        else:
+            print("Authentication failed, enter correct name and password\n")
+            return 3
+            
+    #method to add movies        
+    def add_movies(self):
+        
+        file=open("pyt.txt","a")
+        ss=raw_input("Enter the movie name with its cost for golden and silver class and timings separated by a space(ex: Avengers 500 350 10:30am)")
+        file.write(ss)
+        file.close()
+        
+        
+    #method to delete movies    
+    def delete_movie(self,movie):
+        
+        file = open("pyt.txt", "r+")
+        aaa=file.readlines()
+        file.seek(0)
+        for line in aaa:
+
+            line1=line.split(" ")
+            
+            if not(line1[0].lower() == movie.lower()):   
+                   print(line1[0])
+                   file.write(line)
+   
+                   
+        file.truncate()   
+        file.close()     
+
+        
+        
+    #Method to display balance    
+    def balance(self,bal):
+        
+        print "Your balance is",bal
+        
+        
+        
+class User():
+    
+    global accountbalance
+    accountbalance=0
+
+    
+    def __init__(self,name,password,filename):
+        
+        self.name=name
+        self.password=password
+        self.filename=filename          
+        
+        
+    #Method to display movies list    
+    def movies_list(self):
+        
+        print("Movies list\n")
+        f = open(self.filename, "r")
+        for line in f:
+            
+            words = line.split()
+            print words[0],words[3]
+            
+        return words    
+    
+    #Method to find a movie
+    def find_movie(self,mvi):
+        
+        cn=0
+        f=open(self.filename,"r")
+        for line in f:
+            words=line.split()
+            if(mvi.lower() == words[0].lower()):
+                print("Movie is available\n")
+                cn+=1
+                
+        if(cn==0):
+            print("Movie not available\n")
+                
+     #Method to book tickets   
+    def book_tickets(self):
+        
+        global count,count1,count2,count3,count4,count5
+        global go,si,no,time,mv
+        global n1
+        print("Enter 1 to book movie at 10:30am")
+        print("Enter 2 to book movie at 3:30pm")
+        print("Enter 3 to book movie at 7:30pm")
+        c=int(input())
+        
+        
+        if(c==1):  
+            
+           f = open(self.filename, "r")
+           for line in f:
+               words = line.split()
+               if(words[3]=="10:30am"):
+                   print "Movie :",words[0]
+                   go,si,time,mv=words[1],words[2],words[3],words[0]
+                   print(si)
+                   print "Ticket cost for golden calss is:",words[1]
+                   print "Ticket cost for silver class is:",words[2]
+           n1=int(raw_input("Choose 1 for silver class and 2 for golden class(default is silver class)"))   
+           
+           if(n1==2):
+               print("\n")
+               print "Number of seats available are",count
+               no=int(raw_input("Enter number of tickets to be booked"))
+               
+               count=count - no
+               
+          
+           else:
+               print("\n")
+               print "Number of seats available are",count1
+               no=int(raw_input("Enter number of tickets to be booked"))
+               
+               count1=count1 - no
+               
+          
+        elif(c==2):
+            
+           f = open(self.filename, "r")
+           for line in f:
+               words = line.split()
+               if(words[3]=="3:30pm"):
+                   print "Movie :",words[0] 
+                   go,si,time,mv=words[1],words[2],words[3],words[0]
+                   print "Ticket cost for golden calss is:",words[1]
+                   print "Ticket cost for silver class is:",words[2]
+           n1=int(raw_input("Choose 1 for silver class and 2 for golden class(default is silver class)"))  
+           
+           if(n1==2):
+               print("\n")
+               print "Number of seats available are",count2
+               no=int(raw_input("Enter number of tickets to be booked"))
+               
+               count2=count2 - no
+               
+               
+           else:
+               print("\n")
+               print "Number of seats available are",count3
+               no=int(raw_input("Enter number of tickets to be booked"))
+               
+               count3=count3 - no
+               
+               
+        elif(c==3): 
+            
+           f = open(self.filename, "r")
+           for line in f:
+               words = line.split()
+               if(words[3]=="7:30pm"):
+                   print "Movie :",words[0] 
+                   go,si,time,mv=words[1],words[2],words[3],words[0]
+                   print "Ticket cost for golden calss is:",words[1]
+                   print "Ticket cost for silver class is:",words[2]
+           n1=int(raw_input("Choose 1 for silver class and 2 for golden class(default is silver class)\n"))  
+           
+           if(n1==2):
+               print("\n")
+               print "Number of seats available are\n",count4
+               no=int(raw_input("Enter number of tickets to be booked\n"))
+               
+               count4=count4 - no
+               
+         
+           else:
+               print("\n")
+               print "Number of seats available are\n",count5
+               no=int(raw_input("Enter number of tickets to be booked\n"))
+               
+               count5=count5 - no
+               
+               
+            
+        
+    #Method to make payment    
+    def payment(self):
+        
+        
+            global accountbalance
+            global amt
+            print("\n")
+            print("Online payment accepted\n")
+            
+            amt=int(raw_input("Enter the amount to be paid\n"))
+            
+            if(n1==1):
+                if(amt!=int(si)*no):
+                  print("a")
+                  print("Please pay",int(si)*no)
+                  amt=int(raw_input())
+            elif(n1==2):
+                if(amt!=int(go)*no):
+                  print("Please pay",int(go)*no)
+                  amt=int(raw_input())
+                  
+            print "Amount paid is:",amt
+            accountbalance+=amt
+            
+            return(accountbalance)
+            
+    #Method to display ticket details            
+    def display_details(self):
+        
+        print("*********************************************")
+        print("*********************************************")
+        print("Ticket details")
+        print("\n")
+        print "Name:",self.name
+        print "Movie name :", mv
+        print "Timings:", time
+        if(n1==1):
+            print("Selected class is golden")
+        elif(n1==2):
+            print("Selected class is silver")
+        print "Amount paid:", amt    
+        print("*********************************************")    
+        print("*********************************************")
+        
+        
+while True:
+    
+    option=raw_input("Choose any option(ex:admin or user or exit)\n")
+    
+    if(option=="admin" or option=="ADMIN"):
+        
+        name,password=raw_input("Please enter your name and password(separated by a space)\n").split()
+        adm=Administrator(name,password)    
+        a=adm.authentication()
+        if(a==2):
+           name=raw_input("Enter your name\n")
+           adm=Administrator(name,password)
+           a=adm.authentication()
+        elif(a==0):    
+           password=raw_input("Enter password\n")
+           adm=Administrator(name,password)
+           a=adm.authentication()
+        elif(a==3):
+           name,password=raw_input("Please enter your name and password(separated by a space)\n").split()
+           adm=Administrator(name,password)
+           a=adm.authentication()
+        else:    
+           pass
+        c=raw_input("Would you like to insert a new movie(Answer y/n)\n")
+        
+        if(c=='y' or c=='Y'):
+            adm.add_movies()
+        
+        else:
+            pass
+        print("\n")
+        d=raw_input("Would you like to delete a movie(Answer y/n)\n")
+        if(d=='y' or d== 'Y'):
+            mov=raw_input("Enter the movie name to be deleted\n")
+            adm.delete_movie(mov)
+            
+        else:
+            pass
+        
+        if(cnt>=1):
+            print("Check your account balance\n")
+            opt=raw_input("Check your account balance(Choose yes or no)\n")
+            if(opt=="yes" or opt=="YES"):
+               adm.balance(bb)
+        else:
+            opt=raw_input("Check your account balance(Choose yes or no)\n")
+            if(opt=="yes" or opt=="YES"):
+                print("Your balance is zero")
+                
+                
+        
+    elif(option=="user" or option=="USER"):
+          name1,password1=raw_input("Please enter your name and password\n").split() 
+          usr=User(name1,password1,"pyt.txt")
+          
+          
+          while True:      
+            b=[]
+            print("\n")
+            print("Enter 1 to view all movies")
+            print("Enter 2 find a movie")
+            print("Enter 3 book tickets")
+            print("Enter 4 to exit")
+            print("Enter 5 to display ticket")
+            choice=int(input())
+            print(choice)
+            
+            if(choice == 1):
+                usr.movies_list()
+                
+            elif(choice == 2):
+                b=raw_input("Enter the movie name\n")
+                print(b)
+                usr.find_movie(b)
+                
+            elif(choice == 3):
+                cnt+=1
+                usr.book_tickets()
+                bb=usr.payment()
+                
+            elif(choice == 5):
+               
+                if(cnt==0):
+                    print("You have not booked a movie")
+                else:    
+                    usr.display_details()
+            else:
+            #    sys.exit()
+                 break
+    else:
+        print("**********************************")
+        print("----Thank you for visiting us-----")
+        print("**********************************")
+        break
+                 
+        
